@@ -1,0 +1,17 @@
+[
+  {
+    "account":"03247",
+    "file-path": "images/integration-test.yaml",
+    "runOn":"always"
+  },
+  {
+    "account":"26567",
+    "file-path": "images/image-config-file.yaml",
+    "runOn":"main"
+  },
+  {
+    "account":"73749",
+    "file-path": "images/image-config-file.yaml",
+    "runOn":"main"
+  }
+]
