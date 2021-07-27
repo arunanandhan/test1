@@ -32,4 +32,6 @@ jobs:
     strategy:
       matrix: ${{fromJson(needs.matrix_prep.outputs.matrix)}}
     steps:
-      - run: echo "Hello ${{ matrix.account }}"
+      - run: |
+          echo "Hello ${{ matrix.account }}"
+          echo "FileName for this account is ${{ matrix.file-path }}"
