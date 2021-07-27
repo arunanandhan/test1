@@ -4,13 +4,12 @@ name: "Push External Image into AWS ECR"
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches:
-      - main
     paths:
-      - ".github/workflows/publish-external-docker-images-ecr.yaml"
+      - ".github/workflows/main.yaml"
       - "images/*"
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+
 
 jobs:
   matrix_prep:
@@ -31,4 +30,6 @@ jobs:
     strategy:
       matrix: ${{fromJson(needs.matrix_prep.outputs.matrix)}}
     steps:
-      - run: echo "Hello ${{ matrix.account }}"
+      - run: |
+          echo "Hello ${{ matrix.account }}"
+          echo "FileName for this account is ${{ matrix.file-path }}"
