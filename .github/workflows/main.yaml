@@ -7,7 +7,7 @@ on:
     branches:
       - test
     paths:
-      - ".github/workflows/publish-external-docker-images-ecr.yaml"
+      - ".github/workflows/main.yaml"
       - "images/*"
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
