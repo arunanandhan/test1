@@ -1,0 +1,34 @@
+# This workflow was inspired by https://learn.hashicorp.com/tutorials/terraform/github-actions
+name: "Push External Image into AWS ECR"
+
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches:
+      - INFRA-56_Automated_Test
+    paths:
+      - ".github/workflows/publish-external-docker-images-ecr.yaml"
+      - "images/*"
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  matrix_prep:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+      - id: set-matrix
+        run: |
+          branchName=$(echo '${{ github.ref }}' | sed 's,refs/heads/,,g')
+          matrix=$(jq --arg branchName "$branchName" 'map(. | select((.runOn==$branchName) or (.runOn=="always")) )' matrix_includes.json)
+          echo ::set-output name=matrix::{\"include\":$(echo $matrix)}\"
+  build-n-test:
+    needs: matrix_prep
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{fromJson(needs.matrix_prep.outputs.matrix)}}
+    steps:
+      - run: echo "Hello ${{ matrix.account }}"
